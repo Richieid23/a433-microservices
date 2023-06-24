@@ -1,0 +1,30 @@
+# Schema version dari Docker Compose
+version: '3.7'
+
+services:
+  # Membuat sebuah docker container service baru bernama item-app
+  item-app:
+    # Menggunakan docker image dari fitrarizki/item-app:v1
+    image: fitrarizki/item-app:v1
+    # Mapping port aplikasi dari 8080 sehingga bisa di akses dari host dengan port 80
+    ports:
+      - 80:8080
+    # Menentukan agar service ini hanya berjalan ketika service item-db sudah berjalan
+    depends_on:
+      - item-db
+    # Menentukan restart policy dimana container akan selalu restart saat terhenti 
+    restart: always
+
+  # Membuat service baru untuk daatabase dengan nama item-db
+  item-db:
+    # Menggunakan mongo:3 sebagai database yang digunakan
+    image: mongo:3
+    # Menentukan volume yang digunaka dan path di dalam container
+    volumes:
+      - app-db:/data/db
+    # Menentukan restart policy dimana container akan selalu restart saat terhenti 
+    restart: always
+
+# Membuat sebuah volume baru dengan nama app-db
+volumes:
+  app-db:
