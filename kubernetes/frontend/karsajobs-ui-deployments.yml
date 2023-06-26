@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs-ui-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: karsajobs
+      type: ui
+  template:
+    metadata:
+      labels:
+        app: karsajobs
+        type: ui
+    spec:
+      containers:
+        - name: karsajobs-ui
+          image: fitrarizki/karsajobs-ui:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: VUE_APP_BACKEND
+              value: http://karsajobs-backend:$(KARSAJOBS_BACKEND_SERVICE_PORT)
